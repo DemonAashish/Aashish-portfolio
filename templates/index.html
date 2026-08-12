@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Aashish Upreti — Data Scientist & Software Developer' }}{% endblock %}
+{% block description %}Portfolio of Aashish Upreti — Data Scientist & Software Developer specializing in Python, machine learning, and predictive modeling.{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<nav class="nav">
+  <div class="nav__inner">
+    <a class="nav__mark" href="#top">AU<span>.</span></a>
+    <div class="nav__links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="nav__mobile" id="navMobile">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div id="top"></div>
+
+<header class="hero stop--terminus">
+  <span class="stop__marker"></span>
+  <span class="stop__label">Terminus</span>
+  <div class="container" style="padding-left:0; padding-right:0;">
+    <p class="hero__eyebrow">Open to Data Scientist / Data Analyst roles</p>
+    <h1 class="hero__name">Aashish<br>Upreti<span>.</span></h1>
+    <p class="hero__role">Data Scientist &amp; Software Developer</p>
+    <p class="hero__summary">I bridge software engineering with data analytics — turning complex datasets into scalable, evidence-based solutions with Python, machine learning workflows, and predictive modeling.</p>
+    <div class="hero__actions">
+      <a href="#projects" class="btn btn--primary">View Projects</a>
+      <a href="#contact" class="btn btn--ghost">Get in Touch</a>
+    </div>
+    <div class="hero__meta">
+      <span>Kathmandu, Nepal</span>
+      <a href="tel:+9779811028330">+977 981 102 8330</a>
+      <a href="mailto:aashishupreti111@gmail.com">aashishupreti111@gmail.com</a>
+      <!-- TODO: swap in your full LinkedIn profile URL -->
+      <span>LinkedIn/Aashish</span>
+    </div>
+  </div>
+</header>
+
+<main class="journey">
+  <div class="journey-line"><div class="journey-line__fill" id="journeyFill"></div></div>
+
+  <section class="stop" id="about">
+    <span class="stop__marker"></span>
+    <span class="stop__label">Stop 01</span>
+    <div class="container" style="padding-left:0; padding-right:0;">
+      <p class="section-kicker">About</p>
+      <h2 class="section-title">Background</h2>
+      <p class="lede" style="margin-top:16px;">
+        With a dual foundation in Computer Engineering from Kathmandu Engineering College and a
+        Master's in Data Science from the University of Greenwich, I specialize in Python, machine
+        learning workflows, and predictive modeling — using a structured quantitative lens to turn
+        complex datasets into scalable, evidence-based business solutions.
+      </p>
+
+      <div class="edu-grid">
+        {% for edu in education %}
+        <div class="card">
+          <div class="edu-card__degree">{{ edu.degree }}</div>
+          <div class="edu-card__institution">{{ edu.institution }}</div>
+          <div class="edu-card__dates">{{ edu.date_range }}</div>
+        </div>
+        {% else %}
+        <p class="empty-note">Education details coming soon.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" id="experience">
+    <span class="stop__marker"></span>
+    <span class="stop__label">Stop 02</span>
+    <div class="container" style="padding-left:0; padding-right:0;">
+      <p class="section-kicker">Experience</p>
+      <h2 class="section-title">Where I've worked</h2>
+      <div style="margin-top:26px;">
+        {% for exp in experiences %}
+        <div class="job">
+          <div class="job__head">
+            <div>
+              <span class="job__role">{{ exp.role }}</span>
+              <span style="color:var(--text-muted);"> · </span>
+              <span class="job__company">{{ exp.company }}</span>
+            </div>
+            <span class="job__dates">{{ exp.date_range }}</span>
+          </div>
+          <ul class="job__bullets">
+            {% for point in exp.highlights %}
+            <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% else %}
+        <p class="empty-note">Experience details coming soon.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" id="projects">
+    <span class="stop__marker"></span>
+    <span class="stop__label">Stop 03</span>
+    <div class="container" style="padding-left:0; padding-right:0;">
+      <p class="section-kicker">Projects</p>
+      <h2 class="section-title">Featured work</h2>
+      <div style="margin-top:26px;">
+        {% for project in projects %}
+        <article class="project-card">
+          <h3 class="project-card__title">{{ project.title }}</h3>
+          <p class="project-card__desc">{{ project.description }}</p>
+          {% if project.highlights %}
+          <ul class="project-card__bullets">
+            {% for point in project.highlights %}
+            <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <div class="project-card__footer">
+            <div class="tag-row">
+              {% for tech in project.tech_stack %}
+              <span class="tag">{{ tech }}</span>
+              {% endfor %}
+            </div>
+            {% if project.github_url or project.live_url %}
+            <div class="project-card__links">
+              {% if project.github_url %}<a href="{{ project.github_url }}" target="_blank" rel="noopener">Code →</a>{% endif %}
+              {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank" rel="noopener">Live →</a>{% endif %}
+            </div>
+            {% endif %}
+          </div>
+        </article>
+        {% else %}
+        <p class="empty-note">Projects coming soon — check back shortly.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="stop" id="skills">
+    <span class="stop__marker"></span>
+    <span class="stop__label">Stop 04</span>
+    <div class="container" style="padding-left:0; padding-right:0;">
+      <p class="section-kicker">Skills</p>
+      <h2 class="section-title">Toolkit</h2>
+
+      <div class="skills-grid" style="margin-top:26px;">
+        {% for category, names in skills_by_category.items() %}
+        <div>
+          <p class="skill-group__title">{{ category }}</p>
+          <div class="tag-row">
+            {% for name in names %}
+            <span class="tag">{{ name }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% else %}
+        <p class="empty-note">Skills coming soon.</p>
+        {% endfor %}
+      </div>
+
+      {% if certifications %}
+      <p class="skill-group__title" style="margin-top:40px;">Certifications</p>
+      <div style="margin-top:14px;">
+        {% for cert in certifications %}
+        <div class="cert">
+          <span class="cert__name">{{ cert.name }}</span>
+          {% if cert.issuer %}<span class="cert__issuer">{{ cert.issuer }}</span>{% endif %}
+          {% if cert.description %}<p class="cert__desc">{{ cert.description }}</p>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="stop stop--terminus" id="contact">
+    <span class="stop__marker"></span>
+    <span class="stop__label">Terminus</span>
+    <div class="container" style="padding-left:0; padding-right:0;">
+      <p class="section-kicker">Contact</p>
+      <h2 class="section-title">Let's talk</h2>
+      <p class="lede" style="margin-top:10px;">Open to Data Scientist and Data Analyst roles — reach out directly or send a message below.</p>
+
+      <div class="contact-grid" style="margin-top:32px;">
+        <div>
+          <div class="contact-info__item">
+            <div class="contact-info__label">Email</div>
+            <div class="contact-info__value"><a href="mailto:aashishupreti111@gmail.com">aashishupreti111@gmail.com</a></div>
+          </div>
+          <div class="contact-info__item">
+            <div class="contact-info__label">Phone</div>
+            <div class="contact-info__value"><a href="tel:+9779811028330">+977 981 102 8330</a></div>
+          </div>
+          <div class="contact-info__item">
+            <div class="contact-info__label">Location</div>
+            <div class="contact-info__value">Kathmandu, Nepal</div>
+          </div>
+          <div class="contact-info__item">
+            <div class="contact-info__label">LinkedIn</div>
+            <!-- TODO: swap in your full LinkedIn profile URL -->
+            <div class="contact-info__value">LinkedIn/Aashish</div>
+          </div>
+        </div>
+
+        <form id="contactForm">
+          <div class="field">
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" required maxlength="200">
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" required maxlength="200">
+          </div>
+          <div class="field">
+            <label for="cf-subject">Subject</label>
+            <input type="text" id="cf-subject" name="subject" maxlength="300">
+          </div>
+          <div class="field">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" required maxlength="5000"></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--block" id="cfSubmit">Send Message</button>
+          <p class="form-status" id="cfStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>&copy; <span id="year"></span> Aashish Upreti · Built with Flask &amp; PostgreSQL · <a href="{{ url_for('auth.login') }}">Dashboard</a></p>
+</footer>
+
+<!-- AI chat widget -->
+<button class="chat-launcher" id="chatLauncher" aria-label="Open chat" aria-expanded="false">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat with an AI assistant about Aashish">
+  <div class="chat-panel__head">
+    <div>
+      <div class="chat-panel__title">Ask about Aashish</div>
+      <div class="chat-panel__subtitle">AI assistant</div>
+    </div>
+    <button class="chat-panel__close" id="chatClose" aria-label="Close chat">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="chat-panel__body" id="chatBody">
+    <div class="chat-msg chat-msg--bot">Hi! I'm an AI assistant trained on Aashish's background. Ask me about his experience, projects, or skills.</div>
+  </div>
+  <form class="chat-panel__form" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Ask a question…" maxlength="1000" autocomplete="off" aria-label="Chat message">
+    <button type="submit" id="chatSend" aria-label="Send message">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </form>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

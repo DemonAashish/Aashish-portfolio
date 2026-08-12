@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Aashish Upreti{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+{% block body %}
+
+<div class="dash">
+  <aside class="dash-sidebar">
+    <div class="dash-sidebar__brand">AU<span>.</span> <span class="dash-sidebar__tag">Dashboard</span></div>
+    <nav class="dash-nav" id="dashNav">
+      <button class="dash-nav__item is-active" data-tab="overview" type="button">Overview</button>
+      <button class="dash-nav__item" data-tab="projects" type="button">Projects</button>
+      <button class="dash-nav__item" data-tab="skills" type="button">Skills</button>
+      <button class="dash-nav__item" data-tab="experience" type="button">Experience</button>
+      <button class="dash-nav__item" data-tab="education" type="button">Education</button>
+      <button class="dash-nav__item" data-tab="certifications" type="button">Certifications</button>
+      <button class="dash-nav__item" data-tab="messages" type="button">Messages <span class="dash-badge" id="unreadBadge" hidden></span></button>
+      <button class="dash-nav__item" data-tab="chatlogs" type="button">Chat Logs</button>
+      <button class="dash-nav__item" data-tab="account" type="button">Account</button>
+    </nav>
+    <div class="dash-sidebar__footer">
+      <a href="{{ url_for('main.index') }}" target="_blank" rel="noopener" class="dash-sidebar__link">View site ↗</a>
+      <a href="{{ url_for('auth.logout') }}" class="dash-sidebar__link dash-sidebar__link--danger">Log out</a>
+    </div>
+  </aside>
+
+  <div class="dash-mobilebar">
+    <span>AU<span style="color:var(--amber)">.</span> Dashboard</span>
+    <select id="dashMobileNav" aria-label="Navigate dashboard">
+      <option value="overview">Overview</option>
+      <option value="projects">Projects</option>
+      <option value="skills">Skills</option>
+      <option value="experience">Experience</option>
+      <option value="education">Education</option>
+      <option value="certifications">Certifications</option>
+      <option value="messages">Messages</option>
+      <option value="chatlogs">Chat Logs</option>
+      <option value="account">Account</option>
+    </select>
+  </div>
+
+  <main class="dash-main">
+
+    <section class="dash-panel is-active" id="panel-overview">
+      <h1 class="dash-panel__title">Overview</h1>
+      <p class="dash-panel__subtitle">Welcome back, {{ username }}.</p>
+      <div class="stat-grid" id="statGrid"></div>
+    </section>
+
+    <section class="dash-panel" id="panel-projects">
+      <div class="dash-panel__head">
+        <div>
+          <h1 class="dash-panel__title">Projects</h1>
+          <p class="dash-panel__subtitle">Shown on the public Projects section, in this order.</p>
+        </div>
+        <button class="btn btn--primary" data-add="projects" type="button">+ Add project</button>
+      </div>
+      <div class="table-wrap"><table class="dash-table" id="table-projects"></table></div>
+    </section>
+
+    <section class="dash-panel" id="panel-skills">
+      <div class="dash-panel__head">
+        <div>
+          <h1 class="dash-panel__title">Skills</h1>
+          <p class="dash-panel__subtitle">Grouped by category on the public Skills section.</p>
+        </div>
+        <button class="btn btn--primary" data-add="skills" type="button">+ Add skill</button>
+      </div>
+      <div class="table-wrap"><table class="dash-table" id="table-skills"></table></div>
+    </section>
+
+    <section class="dash-panel" id="panel-experience">
+      <div class="dash-panel__head">
+        <div>
+          <h1 class="dash-panel__title">Experience</h1>
+          <p class="dash-panel__subtitle">Work history shown on the public Experience section.</p>
+        </div>
+        <button class="btn btn--primary" data-add="experience" type="button">+ Add role</button>
+      </div>
+      <div class="table-wrap"><table class="dash-table" id="table-experience"></table></div>
+    </section>
+
+    <section class="dash-panel" id="panel-education">
+      <div class="dash-panel__head">
+        <div>
+          <h1 class="dash-panel__title">Education</h1>
+          <p class="dash-panel__subtitle">Shown as cards in the public About section.</p>
+        </div>
+        <button class="btn btn--primary" data-add="education" type="button">+ Add education</button>
+      </div>
+      <div class="table-wrap"><table class="dash-table" id="table-education"></table></div>
+    </section>
+
+    <section class="dash-panel" id="panel-certifications">
+      <div class="dash-panel__head">
+        <div>
+          <h1 class="dash-panel__title">Certifications</h1>
+          <p class="dash-panel__subtitle">Listed under the public Skills section.</p>
+        </div>
+        <button class="btn btn--primary" data-add="certifications" type="button">+ Add certification</button>
+      </div>
+      <div class="table-wrap"><table class="dash-table" id="table-certifications"></table></div>
+    </section>
+
+    <section class="dash-panel" id="panel-messages">
+      <h1 class="dash-panel__title">Messages</h1>
+      <p class="dash-panel__subtitle">Submissions from the public contact form, newest first.</p>
+      <div class="msg-list" id="msgList"></div>
+    </section>
+
+    <section class="dash-panel" id="panel-chatlogs">
+      <h1 class="dash-panel__title">Chat Logs</h1>
+      <p class="dash-panel__subtitle">Recent conversations from the AI chat widget (most recent 200).</p>
+      <div class="msg-list" id="chatLogList"></div>
+    </section>
+
+    <section class="dash-panel" id="panel-account">
+      <h1 class="dash-panel__title">Account</h1>
+      <p class="dash-panel__subtitle">Change the password used to log in to this dashboard.</p>
+      <form id="passwordForm" class="stack-form">
+        <div class="field">
+          <label for="curPass">Current password</label>
+          <input type="password" id="curPass" required autocomplete="current-password">
+        </div>
+        <div class="field">
+          <label for="newPass">New password</label>
+          <input type="password" id="newPass" required minlength="8" autocomplete="new-password">
+        </div>
+        <button class="btn btn--primary" type="submit">Update password</button>
+        <p class="form-status" id="passwordStatus" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__head">
+      <h2 id="modalTitle">Add item</h2>
+      <button class="modal__close" id="modalClose" type="button" aria-label="Close">&times;</button>
+    </div>
+    <form id="modalForm" class="modal__body"></form>
+    <div class="modal__foot">
+      <button type="button" class="btn btn--ghost" id="modalCancel">Cancel</button>
+      <button type="submit" form="modalForm" class="btn btn--primary" id="modalSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
